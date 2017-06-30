@@ -1,4 +1,6 @@
-TARGETS  = 
+TARGETS  = rh-asn1c asn1-decoder.o
+
+CFLAGS	+= -I$(CURDIR)/include
 
 all: $(TARGETS)
 

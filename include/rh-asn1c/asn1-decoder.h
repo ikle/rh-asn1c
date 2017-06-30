@@ -12,7 +12,7 @@
 #ifndef _LINUX_ASN1_DECODER_H
 #define _LINUX_ASN1_DECODER_H
 
-#include <linux/asn1.h>
+#include <rh-asn1c/asn1.h>
 
 struct asn1_decoder;
 

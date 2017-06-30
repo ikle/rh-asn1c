@@ -3,4 +3,5 @@
 *.a
 *.so
 *.so.*
+rh-asn1c
 *-asn1.[ch]

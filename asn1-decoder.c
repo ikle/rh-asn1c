@@ -9,11 +9,24 @@
  * 2 of the Licence, or (at your option) any later version.
  */
 
+#ifdef __KERNEL__
 #include <linux/export.h>
 #include <linux/kernel.h>
 #include <linux/errno.h>
-#include <linux/asn1_decoder.h>
-#include <linux/asn1_ber_bytecode.h>
+#else
+#include <errno.h>
+#include <stddef.h>
+#include <stdio.h>
+
+#define EXPORT_SYMBOL_GPL(n)
+#define unlikely(n)  (n)
+
+#define pr_err(fmt, ...)	fprintf(stderr, fmt, __VA_ARGS__)
+#define pr_debug(fmt, ...)	do {} while(0);
+#endif
+
+#include <rh-asn1c/asn1-decoder.h>
+#include <rh-asn1c/asn1-ber-bytecode.h>
 
 static const unsigned char asn1_op_lengths[ASN1_OP__NR] = {
 	/*					OPC TAG JMP ACT */
@@ -142,13 +155,13 @@ error:
 
 /**
  * asn1_ber_decoder - Decoder BER/DER/CER ASN.1 according to pattern
- * @decoder: The decoder definition (produced by asn1_compiler)
+ * @decoder: The decoder definition (produced by rh-asn1c)
  * @context: The caller's context (to be passed to the action functions)
  * @data: The encoded data
  * @datalen: The size of the encoded data
  *
  * Decode BER/DER/CER encoded ASN.1 data according to a bytecode pattern
- * produced by asn1_compiler.  Action functions are called on marked tags to
+ * produced by rh-asn1c.  Action functions are called on marked tags to
  * allow the caller to retrieve significant data.
  *
  * LIMITATIONS:

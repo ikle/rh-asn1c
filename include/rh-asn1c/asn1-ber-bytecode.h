@@ -14,8 +14,11 @@
 
 #ifdef __KERNEL__
 #include <linux/types.h>
+#else
+#include <stddef.h>
 #endif
-#include <linux/asn1.h>
+
+#include <rh-asn1c/asn1.h>
 
 typedef int (*asn1_action_t)(void *context,
 			     size_t hdrlen, /* In case of ANY type */
