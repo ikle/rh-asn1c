@@ -16,13 +16,22 @@
 #else
 #include <errno.h>
 #include <stddef.h>
+
+#ifndef PR_ERR
 #include <stdio.h>
+
+#define PR_ERR(fmt, ...)	fprintf(stderr, fmt, __VA_ARGS__)
+#endif
+
+#ifndef PR_DEBUG
+#define PR_DEBUG(fmt, ...)	do {} while(0);
+#endif
 
 #define EXPORT_SYMBOL_GPL(n)
 #define unlikely(n)  (n)
 
-#define pr_err(fmt, ...)	fprintf(stderr, fmt, __VA_ARGS__)
-#define pr_debug(fmt, ...)	do {} while(0);
+#define pr_err(fmt, ...)	PR_ERR(fmt, __VA_ARGS__)
+#define pr_debug(fmt, ...)	PR_DEBUG(fmt, __VA_ARGS__)
 #endif
 
 #include <rh-asn1c/asn1-decoder.h>
