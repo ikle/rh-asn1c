@@ -1347,8 +1347,8 @@ static void render(FILE *out, FILE *hdr)
 	for (action = action_list; action; action = action->next) {
 		action->index = index++;
 		fprintf(hdr,
-			"extern int %s(void *, size_t, unsigned char,"
-			" const void *, size_t);\n",
+			"int %s(void *context, size_t hdrlen, unsigned char tag,\n"
+			"\tconst void *value, size_t len);\n",
 			action->name);
 	}
 	fprintf(hdr, "\n");
