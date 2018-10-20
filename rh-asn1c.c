@@ -204,8 +204,22 @@ static const char *const asn1_universal_tags[32] = {
 
 static const char *filename;
 static const char *grammar_name;
-static const char *outputname;
-static const char *headername;
+static char *outputname;
+static char *headername;
+
+static void gen_output_names(void)
+{
+	int len = snprintf(NULL, 0, "%s-asn1.c", grammar_name) + 1;
+
+	if ((outputname = malloc(len)) == NULL ||
+	    (headername = malloc(len)) == NULL) {
+		perror("asn1c");
+		exit(1);
+	}
+
+	snprintf(outputname, len, "%s-asn1.c", grammar_name);
+	snprintf(headername, len, "%s-asn1.h", grammar_name);
+}
 
 static const char *const directives[NR__DIRECTIVES] = {
 #define _(X) [DIRECTIVE_##X] = #X
@@ -586,15 +600,13 @@ int main(int argc, char **argv)
 		argc--;
 	}
 
-	if (argc != 4) {
-		fprintf(stderr, "Format: %s [-v] [-d] <grammar-file> <c-file> <hdr-file>\n",
+	if (argc != 2) {
+		fprintf(stderr, "Format: %s [-v] [-d] <grammar-file>\n",
 			argv[0]);
 		exit(2);
 	}
 
 	filename = argv[1];
-	outputname = argv[2];
-	headername = argv[3];
 
 	fd = open(filename, O_RDONLY);
 	if (fd < 0) {
@@ -637,6 +649,8 @@ int main(int argc, char **argv)
 	p = strchr(grammar_name, '.');
 	if (p)
 		*p = '\0';
+
+	gen_output_names();
 
 	buffer[readlen] = 0;
 	tokenise(buffer, buffer + readlen);
