@@ -20,4 +20,4 @@ install: $(TARGETS)
 %-asn1.c %-asn1.h: %.asn1
 	$(ASN1C) $^
 
-x509-show: x509-asn1.o ../asn1-decoder.o
+x509-show: x509-asn1.o ../librh-asn1c.a
